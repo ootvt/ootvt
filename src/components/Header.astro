@@ -1,5 +1,6 @@
 ---
 import { SITE_TITLE } from '../consts';
+import HeaderLink from './HeaderLink.astro'; // 1. 引入 HeaderLink 组件
 ---
 
 <header>
@@ -7,10 +8,11 @@ import { SITE_TITLE } from '../consts';
 		<h1 class="site-title">{SITE_TITLE}</h1>
 		
 		<nav>
-			<a href="/" class="nav-button">文章</a>
-			<a href="/blog" class="nav-button">归档</a>
-			<a href="/categories" class="nav-button">分类</a>
-			<a href="/about" class="nav-button">关于</a>
+			{/* 2. 把 <a> 替换为 <HeaderLink>，它会自动判断是否选中 */}
+			<HeaderLink href="/" class="nav-button">文章</HeaderLink>
+			<HeaderLink href="/blog" class="nav-button">归档</HeaderLink>
+			<HeaderLink href="/categories" class="nav-button">分类</HeaderLink>
+			<HeaderLink href="/about" class="nav-button">关于</HeaderLink>
 		</nav>
 	</div>
 </header>
@@ -66,7 +68,9 @@ import { SITE_TITLE } from '../consts';
 		display: inline-block;
 	}
 
-	.nav-button:hover {
+	/* 3. 关键修改：同时选中 hover 和 active 状态 */
+	.nav-button:hover,
+	.nav-button.active { /* 加上这个 .active 选择器 */
 		transform: translate(-3px, -3px);
 		box-shadow: 3px 3px 0px 0px var(--main-color);
 	}

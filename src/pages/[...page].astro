@@ -6,9 +6,16 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+// 1. 定义分页逻辑：每页 5 篇
+export async function getStaticPaths({ paginate }) {
+	const posts = (await getCollection('blog')).sort(
+		(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	);
+	return paginate(posts, { pageSize: 5 });
+}
+
+// 2. 获取分页数据
+const { page } = Astro.props;
 ---
 
 <!doctype html>
@@ -17,13 +24,7 @@ const posts = (await getCollection('blog')).sort(
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 		<style>
-			main {
-				width: 100%;
-				max-width: 672px;
-				margin: 0 auto;
-				padding: 0 1rem 3rem;
-			}
-
+            /* 注意：这里不包含 main 的样式，因为它已经移到了 global.css 中 */
 			.posts-list {
 				display: flex;
 				flex-direction: column;
@@ -86,7 +87,7 @@ const posts = (await getCollection('blog')).sort(
 				opacity: 0.6;
 				font-size: 0.75rem;
 				white-space: nowrap;
-				pointer-events: none; /* 让日期不可点击 */
+				pointer-events: none;
 			}
 
 			.post-tags {
@@ -142,12 +143,10 @@ const posts = (await getCollection('blog')).sort(
 
 			.page-info {
 				color: var(--main-color);
-				/* 移除 font-family: monospace; 让它跟随全局字体（宋体/衬线） */
-				/* font-family: monospace; */ 
-				font-size: 0.75rem; /* 调整为 0.75rem，与 .post-date 和 .post-category 大小一致 */
+				font-size: 0.75rem;
 				opacity: 0.6;
 			}
-			
+
 			.page-buttons {
 				display: flex;
 				gap: 2rem;
@@ -172,7 +171,8 @@ const posts = (await getCollection('blog')).sort(
 		<Header />
 		<main>
 			<ul class="posts-list">
-				{posts.map((post) => (
+				{/* 3. 使用 page.data 而不是 posts 来遍历 */}
+				{page.data.map((post) => (
 					<li class="post-item">
 						<header class="post-header">
 							<a href={`/blog/${post.id}/`} class="post-link" style="flex: 1;">
@@ -205,12 +205,23 @@ const posts = (await getCollection('blog')).sort(
 			</ul>
 
 			<div class="pagination">
-				<span class="page-info">第 1 页 / 共 1 页</span>
-				<div class="page-buttons">
-					<button class="btn-page" disabled>上一页</button>
-					<button class="btn-page" disabled>下一页</button>
-				</div>
-			</div>
+							<span class="page-info">第 {page.currentPage} 页 / 共 {page.lastPage} 页</span>
+							<div class="page-buttons">
+								{/* 如果有上一页，才显示“上一页”按钮 */}
+								{
+									page.url.prev && (
+										<a href={page.url.prev} class="btn-page">上一页</a>
+									)
+								}
+								
+								{/* 如果有下一页，才显示“下一页”按钮 */}
+								{
+									page.url.next && (
+										<a href={page.url.next} class="btn-page">下一页</a>
+									)
+								}
+							</div>
+						</div>
 		</main>
 		<Footer />
 	</body>

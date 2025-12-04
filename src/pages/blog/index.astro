@@ -5,12 +5,10 @@ import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 
-// 1. 获取博客并按时间排序
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-// 2. 按年份分组
 const postsByYear = posts.reduce((acc, post) => {
     const year = post.data.pubDate.getFullYear();
     if (!acc[year]) {
@@ -28,24 +26,18 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
-			/* 复用首页的 main 宽度设置 */
-			main {
-				width: 100%;
-				max-width: 672px; 
-				margin: 0 auto;
-				padding: 0 1rem 3rem;
-			}
-
 			.year-section {
 				margin-bottom: 3rem;
 			}
 
-			.year-title {
-				font-size: 1.8rem;
-				margin-bottom: -0.5rem;
-				padding-bottom: 0.5rem;
-				color: var(--main-color); /* 保持色调一致 */
-				font-family: 'MyLocalZhongSong', 'STZhongsong', serif; /* 保持字体一致 */
+			/* 【修复2】强制去掉最后一个年份区块的底部间距 */
+			.year-section:last-of-type {
+				margin-bottom: 0;
+			}
+			
+			/* 【修复3】强制去掉最后一个列表项的底部间距 */
+			.year-section:last-of-type ul li:last-child {
+				margin-bottom: 0;
 			}
 
 			ul {
@@ -55,10 +47,9 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
 
 			.post-item {
 				margin-bottom: 1rem;
-				display: block; /* 确保 hover 区域覆盖整行 */
+				display: block;
 			}
 
-			/* --- 以下样式完全复刻自首页 index.astro --- */
 			.post-link {
 				text-decoration: none;
 				display: block;
@@ -76,20 +67,19 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
 				left: 0;
 				top: 0;
 				height: 100%;
-				width: 4px; /* 默认竖杠宽度 */
+				width: 4px;
 				background-color: var(--main-color);
 				z-index: -1;
 				transition: width 0.3s ease-in-out;
 			}
 
-			/* 悬停时背景变长 */
 			.post-item:hover .title-bg {
 				width: 100%;
 			}
 
 			.post-title {
 				font-family: 'MyLocalZhongSong', 'STZhongsong', '华文中宋', 'SimSun', serif;
-				font-size: 1.2rem; /* 列表页标题稍微小一点 */
+				font-size: 1.2rem;
 				font-weight: bold;
 				color: var(--main-color);
 				padding-left: 1rem;
@@ -98,7 +88,6 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
 				line-height: 1.6;
 			}
 
-			/* 悬停时文字变白 */
 			.post-item:hover .post-title {
 				color: white;
 			}

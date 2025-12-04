@@ -4,6 +4,12 @@
 /* 1. 引入 Google Fonts (Alfa Slab One & Noto Serif SC) */
 @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Noto+Serif+SC:wght@300;400;500;700&display=swap');
 
+/* 在文件最上方添加或修改 */
+html {
+    /* 强制预留滚动条空间，防止页面内容跳动 */
+    scrollbar-gutter: stable;
+}
+
 /* 2. 定义本地字体 (华文中宋) */
 @font-face {
   font-family: 'MyLocalZhongSong';
@@ -22,19 +28,37 @@
 }
 
 /* 4. 全局 Body 样式 */
+/* ... 前面的 @font-face 和 :root 保持不变 ... */
+
 body {
-  font-family: 'MyLocalZhongSong', 'STZhongsong', '华文中宋', 'SimSun', serif;
-  background-color: var(--bg-color);
-  color: var(--main-color);
-  /* 背景点阵 */
-  background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
-  background-size: 10px 10px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem 1rem; /* py-8 px-4 */
+    font-family: 'MyLocalZhongSong', 'STZhongsong', '华文中宋', 'SimSun', 'Noto Serif SC', serif;
+    background-color: var(--bg-color);
+    color: var(--main-color);
+    background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+    background-size: 10px 10px;
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    
+    /* 【新增】Sticky Footer 核心布局 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 确保身体至少占满整个屏幕高度 */
 }
+
+main {
+    width: 100%;
+    max-width: 672px;
+    margin: 0 auto;
+    
+    /* 【关键】统一所有页面的内边距，跟首页保持一致 */
+    padding: 0 1rem 1rem;
+    
+    /* 【新增】让 main 自动撑开剩余空间，把页脚推到底部 */
+    flex: 1;
+}
+
+/* ... 后面的 h1, a, .btn-nav 等样式保持不变 ... */
 
 /* 5. 标题专用字体 */
 .font-header {
@@ -60,9 +84,10 @@ body {
   text-decoration: none;
 }
 
-.btn-nav:hover {
-  transform: translate(-3px, -3px); 
-  box-shadow: 3px 3px 0px 0px var(--main-color);
+.btn-nav:hover, .nav-button:hover,
+.btn-nav.active, .nav-button.active {  /* 【新增】加上这两个 .active 选择器 */
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 0px 0px var(--main-color);
 }
 
 .btn-nav:active {

@@ -23,22 +23,28 @@ const today = new Date();
 
 <style>
 	footer {
-		margin-top: -0.5rem; /* 保持较小的顶部间距 */
-		padding: 1.5rem 1rem;
+		/* 顶部保持 2rem */
+		margin-top: 2rem;
+		
+		/* 【修改】底部 padding 改为 2rem (原为 0.5rem) */
+		/* 顺序：上 1.5rem | 左右 0 | 下 2rem */
+		padding: 0rem 0 1.5rem; 
+		
 		background: transparent;
-		width: 100%; /* 强制宽度 */
-		box-sizing: border-box; /* 防止 padding 撑大导致换行 */
+		width: 100%;
 	}
 
 	.footer-content {
-		width: 100%; /* 【关键】强制占满容器宽度 */
-		max-width: 672px; /* 限制最大宽度与正文一致 */
+		width: 100%;
+		max-width: 672px;
 		margin: 0 auto;
+		padding: 0 1rem;
 		display: flex;
-		justify-content: space-between; /* 【关键】强制两端对齐 */
+		justify-content: space-between;
 		align-items: center;
 		color: var(--main-color);
 		opacity: 0.8;
+		box-sizing: border-box;
 	}
 
 	.copyright {
@@ -47,7 +53,7 @@ const today = new Date();
 
 	.social-links {
 		display: flex;
-		gap: 1rem; /* 图标之间的间距 */
+		gap: 1rem;
 		font-size: 1.125rem;
 	}
 
@@ -55,7 +61,7 @@ const today = new Date();
 		color: var(--main-color);
 		text-decoration: none;
 		transition: color 0.2s ease;
-		display: flex; /* 防止图标高度塌陷 */
+		display: flex;
 		align-items: center;
 	}
 
@@ -65,7 +71,7 @@ const today = new Date();
 
 	@media (max-width: 768px) {
 		.footer-content {
-			flex-direction: column; /* 手机端垂直排列 */
+			flex-direction: column;
 			gap: 1rem;
 			text-align: center;
 		}
