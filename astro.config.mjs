@@ -1,17 +1,12 @@
-// @ts-check
+/** @type {import('tailwindcss').Config} */
+import typography from '@tailwindcss/typography';
 
-import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
-import { defineConfig } from 'astro/config';
-
-import tailwindcss from '@tailwindcss/vite';
-
-// https://astro.build/config
-export default defineConfig({
-  site: 'https://example.com',
-  integrations: [mdx(), sitemap()],
-
-  vite: {
-    plugins: [tailwindcss()],
-  },
-});
+export default {
+	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+	theme: {
+		extend: {},
+	},
+	plugins: [
+		typography, // <--- 把插件注册在这里
+	],
+}

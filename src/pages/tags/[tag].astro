@@ -1,0 +1,236 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	
+	// 收集所有标签
+	const tags = new Set<string>();
+	posts.forEach(post => {
+		post.data.tags.forEach(tag => tags.add(tag));
+	});
+
+	// 为每个标签创建页面
+	return Array.from(tags).map(tag => ({
+		params: { tag },
+		props: {
+			posts: posts
+				.filter(post => post.data.tags.includes(tag))
+				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+		}
+	}));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`${tag} - ${SITE_TITLE}`} description={`${tag} 分类下的文章`} />
+		<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+		<style>
+			main {
+				width: 100%;
+				max-width: 672px;
+				margin: 0 auto;
+				padding: 0 1rem 3rem;
+			}
+
+			.page-header {
+				margin-bottom: 2rem;
+			}
+
+			.title-wrapper {
+				position: relative;
+				display: inline-block;
+				padding-right: 1.25rem;
+				margin-bottom: 1rem;
+			}
+
+			.title-bg {
+				position: absolute;
+				left: 0;
+				top: 0;
+				height: 100%;
+				width: 4px;
+				background-color: var(--main-color);
+				z-index: -1;
+			}
+
+			.page-title {
+				font-size: 2rem;
+				font-weight: bold;
+				color: var(--main-color);
+				padding-left: 1rem;
+				margin: 0;
+			}
+
+			.tag-info {
+				padding-left: 1rem;
+				color: var(--main-color);
+				opacity: 0.6;
+				font-size: 0.875rem;
+			}
+
+			.back-link {
+				display: inline-block;
+				margin-bottom: 1.5rem;
+				padding: 0.5rem 1rem;
+				background-color: #fff;
+				color: var(--main-color);
+				border: 2px solid var(--main-color);
+				text-decoration: none;
+				font-size: 0.875rem;
+				transition: all 0.2s ease;
+			}
+
+			.back-link:hover {
+				transform: translate(-2px, -2px);
+				box-shadow: 2px 2px 0px 0px var(--main-color);
+			}
+
+			.posts-list {
+				display: flex;
+				flex-direction: column;
+				gap: 2.5rem;
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			.post-item {
+				margin: 0;
+			}
+
+			.post-header {
+				display: flex;
+				align-items: baseline;
+				gap: 0.75rem;
+				margin-bottom: 0.75rem;
+				flex-wrap: wrap;
+			}
+
+			.post-title-wrapper {
+				position: relative;
+				display: inline-block;
+				cursor: pointer;
+				padding-right: 1.25rem;
+			}
+
+			.post-title-bg {
+				position: absolute;
+				left: 0;
+				top: 0;
+				height: 100%;
+				width: 4px;
+				background-color: var(--main-color);
+				z-index: -1;
+				transition: width 0.3s ease-in-out;
+			}
+
+			.post-item:hover .post-title-bg {
+				width: 100%;
+			}
+
+			.post-title {
+				font-family: 'MyLocalZhongSong', 'STZhongsong', '华文中宋', 'SimSun', serif;
+				font-size: 1.5rem;
+				font-weight: bold;
+				color: var(--main-color);
+				padding-left: 1rem;
+				transition: color 0.3s ease;
+				margin: 0;
+			}
+
+			.post-item:hover .post-title {
+				color: white;
+			}
+
+			.post-date {
+				color: var(--main-color);
+				opacity: 0.6;
+				font-size: 0.75rem;
+				white-space: nowrap;
+			}
+
+			.post-content {
+				background-color: var(--box-bg);
+				padding: 1.25rem 1.5rem;
+				border: 1px solid transparent;
+				transition: border-color 0.2s ease;
+			}
+
+			.post-item:hover .post-content {
+				border-color: var(--main-color);
+			}
+
+			.post-description {
+				line-height: 1.6;
+				color: var(--main-color);
+				text-align: justify;
+				margin: 0;
+			}
+
+			.post-link {
+				text-decoration: none;
+				display: block;
+			}
+
+			@media (max-width: 768px) {
+				.page-title {
+					font-size: 1.5rem;
+				}
+
+				.post-title {
+					font-size: 1.25rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<a href="/categories" class="back-link">← 返回分类</a>
+
+			<header class="page-header">
+				<div class="title-wrapper">
+					<div class="title-bg"></div>
+					<h1 class="page-title"># {tag}</h1>
+				</div>
+				<p class="tag-info">共 {posts.length} 篇文章</p>
+			</header>
+
+			<ul class="posts-list">
+				{posts.map((post) => (
+					<li class="post-item">
+						<a href={`/blog/${post.id}/`} class="post-link">
+							<header class="post-header">
+								<div class="post-title-wrapper">
+									<div class="post-title-bg"></div>
+									<h2 class="post-title">{post.data.title}</h2>
+								</div>
+								<span class="post-date">
+									<FormattedDate date={post.data.pubDate} />
+								</span>
+							</header>
+							
+							<div class="post-content">
+								<p class="post-description">
+									{post.data.description}
+								</p>
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>

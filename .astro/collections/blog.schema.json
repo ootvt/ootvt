@@ -45,6 +45,15 @@
         "heroImage": {
           "type": "string"
         },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "随便写点"
+          ]
+        },
         "$schema": {
           "type": "string"
         }

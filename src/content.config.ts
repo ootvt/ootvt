@@ -13,6 +13,7 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
+			tags: z.array(z.string()).default(['随便写点']), // 添加 tags 字段
 		}),
 });
 
