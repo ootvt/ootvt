@@ -68,13 +68,14 @@ const sortedTags = Array.from(tagCounts.entries())
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding: 1.5rem;
+				/* 原来的代码: padding: 1.5rem; */
+				padding: 0.5rem 1.5rem; /* [!code modified] 修改这里：减小垂直内边距，让高度变小 */
 				background-color: var(--box-bg);
 				border: 1px solid transparent;
 				transition: all 0.2s ease;
 				text-decoration: none;
 				color: var(--main-color);
-			}
+}
 
 			.category-link:hover {
 				border-color: var(--main-color);
@@ -97,11 +98,16 @@ const sortedTags = Array.from(tagCounts.entries())
 
 			.total-info {
 				margin-top: 2rem;
-				padding: 1rem 1.5rem;
-				background-color: var(--box-bg);
+				/* [!code deleted] 删除背景色和内边距 */
+				/* padding: 1rem 1.5rem; */
+				/* background-color: var(--box-bg); */
+				
 				text-align: center;
 				color: var(--main-color);
-				opacity: 0.8;
+				
+				/* [!code modified] 修改：字号和透明度改为与分页信息 (.page-info) 一致 */
+				font-size: 0.75rem; 
+				opacity: 0.6;       /* 原为 0.8，改为 0.6 */
 			}
 
 			@media (max-width: 768px) {
@@ -118,10 +124,7 @@ const sortedTags = Array.from(tagCounts.entries())
 	<body>
 		<Header />
 		<main>
-			<div class="page-title-wrapper">
-				<div class="page-title-bg"></div>
-				<h1 class="page-title">分类</h1>
-			</div>
+
 
 			<ul class="categories-grid">
 				{sortedTags.map(([tag, count]) => (

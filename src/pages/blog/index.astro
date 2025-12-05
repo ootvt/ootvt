@@ -8,7 +8,6 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-
 const postsByYear = posts.reduce((acc, post) => {
     const year = post.data.pubDate.getFullYear();
     if (!acc[year]) {
@@ -17,7 +16,6 @@ const postsByYear = posts.reduce((acc, post) => {
     acc[year].push(post);
     return acc;
 }, {});
-
 const years = Object.keys(postsByYear).sort((a, b) => b - a);
 ---
 
@@ -25,24 +23,48 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
 <html lang="zh-CN">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 		<style>
-			.year-section {
-				margin-bottom: 3rem;
-			}
+            main {
+                display: block;
+                width: 100%;
+                max-width: 672px;
+                margin: 0 auto;
+                padding: 0 1rem;
+            }
 
-			/* 【修复2】强制去掉最后一个年份区块的底部间距 */
+            .blog-container-wrapper {
+                position: relative;
+                width: 100%;
+                height: 80vh; 
+                margin: 0 0 2rem 0; 
+            }
+
+            #content-scroll-area {
+                width: 100%;
+                height: 100%;
+                overflow-y: auto; 
+                scrollbar-width: none; 
+                -ms-overflow-style: none; 
+                padding-right: 10px; 
+                scroll-behavior: smooth;
+            }
+            
+            #content-scroll-area::-webkit-scrollbar {
+                display: none; 
+            }
+
+			.year-section {
+				margin-bottom: 2rem;
+			}
 			.year-section:last-of-type {
-				margin-bottom: 0;
+				margin-bottom: 3rem; 
 			}
 			
-			/* 【修复3】强制去掉最后一个列表项的底部间距 */
-			.year-section:last-of-type ul li:last-child {
-				margin-bottom: 0;
-			}
-
 			ul {
 				list-style-type: none;
 				padding: 0;
+                margin: 0;
 			}
 
 			.post-item {
@@ -50,9 +72,55 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
 				display: block;
 			}
 
+            /* 前5个文章参与 View Transition */
+            .post-item[data-index="0"],
+            .post-item[data-index="1"],
+            .post-item[data-index="2"],
+            .post-item[data-index="3"],
+            .post-item[data-index="4"] {
+                /* 这些由 View Transition 处理，不需要额外动画 */
+            }
+
+            /* 第6个及之后的文章：初始状态隐藏并下移 */
+            .post-item[data-animate="true"] {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            /* 页面刷新时直接显示，不执行动画 */
+            .post-item[data-animate="true"].instant-show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* 添加 .fade-in 类后才开始淡入+上移动画 */
+            .post-item.fade-in {
+                animation: fadeInUp 0.8s ease-out forwards;
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* 交错动画延迟 - 基于在动画组中的位置 */
+            .post-item.fade-in[data-animate-index="0"] { animation-delay: 0s; }
+            .post-item.fade-in[data-animate-index="1"] { animation-delay: 0.05s; }
+            .post-item.fade-in[data-animate-index="2"] { animation-delay: 0.1s; }
+            .post-item.fade-in[data-animate-index="3"] { animation-delay: 0.15s; }
+            .post-item.fade-in[data-animate-index="4"] { animation-delay: 0.2s; }
+            .post-item.fade-in[data-animate-index="5"] { animation-delay: 0.25s; }
+
 			.post-link {
 				text-decoration: none;
 				display: block;
+                position: relative; 
 			}
 
 			.title-wrapper {
@@ -79,41 +147,131 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
 
 			.post-title {
 				font-family: 'MyLocalZhongSong', 'STZhongsong', '华文中宋', 'SimSun', serif;
-				font-size: 1.2rem;
+				font-size: 1.5rem; 
 				font-weight: bold;
 				color: var(--main-color);
 				padding-left: 1rem;
 				transition: color 0.3s ease;
 				margin: 0;
-				line-height: 1.6;
+                position: relative;
+                z-index: 10;
 			}
 
 			.post-item:hover .post-title {
 				color: white;
 			}
+
+            .post-year {
+                position: absolute;
+                right: 0; 
+                top: 50%;
+                transform: translateY(-50%); 
+                font-family: 'Alfa Slab One', cursive; 
+                font-size: 1.5rem; 
+                white-space: nowrap;
+                color: var(--main-color); 
+                opacity: 0; 
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+                z-index: 1; 
+            }
+
+            .post-link:hover .post-year {
+                opacity: 1; 
+            }
+
+            @media (max-width: 600px) {
+                .post-year {
+                    display: none; 
+                }
+            }
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			{years.map(year => (
-				<section class="year-section">
-					<h2 class="year-title">{year}</h2>
-					<ul>
-						{postsByYear[year].map((post) => (
-							<li class="post-item">
-								<a href={`/blog/${post.id}/`} class="post-link">
-									<div class="title-wrapper">
-										<div class="title-bg"></div>
-										<h3 class="post-title">{post.data.title}</h3>
-									</div>
-								</a>
-							</li>
-						))}
-					</ul>
-				</section>
-			))}
+            <div class="blog-container-wrapper">
+                <div id="content-scroll-area">
+                    {years.map(year => {
+                        let yearPostIndex = 0;
+                        return (
+                            <section class="year-section">
+                                <ul>
+                                    {postsByYear[year].map((post) => {
+                                        const dateStr = post.data.pubDate.toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long'
+                                        });
+                                        
+                                        // 计算全局索引
+                                        const globalIndex = posts.findIndex(p => p.id === post.id);
+                                        const needsAnimation = globalIndex >= 5;
+                                        const animateIndex = needsAnimation ? (globalIndex - 5) : 0;
+                                        
+                                        yearPostIndex++;
+
+                                        return (
+                                            <li 
+                                                class="post-item"
+                                                data-index={globalIndex}
+                                                data-animate={needsAnimation ? "true" : "false"}
+                                                data-animate-index={animateIndex}
+                                            >
+                                                <a href={`/blog/${post.id}/`} class="post-link">
+                                                    <div 
+                                                        class="title-wrapper" 
+                                                        transition:name={!needsAnimation ? `title-${post.id}` : undefined}
+                                                    >
+                                                        <div class="title-bg"></div>
+                                                        <h3 class="post-title">
+                                                            {post.data.title}
+                                                        </h3>
+                                                    </div>
+                                                    
+                                                    <span class="post-year">{dateStr}</span>
+                                                </a>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </section>
+                        );
+                    })}
+                </div>
+            </div>
 		</main>
 		<Footer />
+
+        <script>
+            function initAnimations() {
+                // 检测是否为页面刷新
+                const navigation = performance.getEntriesByType('navigation')[0];
+                const isPageReload = navigation && navigation.type === 'reload';
+                
+                // 获取所有需要动画的元素
+                const animatedItems = document.querySelectorAll('.post-item[data-animate="true"]');
+                
+                // 如果是页面刷新，直接显示所有内容，不执行动画
+                if (isPageReload) {
+                    animatedItems.forEach(item => {
+                        item.classList.add('instant-show');
+                    });
+                    return;
+                }
+
+                // 如果是页面导航，延迟一点点后执行动画
+                setTimeout(() => {
+                    animatedItems.forEach(item => {
+                        item.classList.add('fade-in');
+                    });
+                }, 150);
+            }
+
+            // 页面首次加载
+            document.addEventListener('DOMContentLoaded', initAnimations);
+            
+            // Astro 页面切换后
+            document.addEventListener('astro:page-load', initAnimations);
+        </script>
 	</body>
 </html>
