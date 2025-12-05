@@ -146,3 +146,54 @@ main {
 .text-custom { color: var(--main-color); }
 .bg-article { background-color: var(--box-bg); }
 .bg-custom-dark { background-color: var(--main-color); }
+html.dark .astro-code,
+html.dark .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    /* 如果主题包含字体样式（如斜体），也需要应用 */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/* 注意：.astro-code 是 Astro 生成代码块时默认加的类名 */
+/* === 代码框的“外壳”装修 === */
+.astro-code {
+    /* 1. 直角：去掉了圆角 */
+    border-radius: 0; 
+    
+    /* 2. 内边距 */
+    padding: 1rem 1.5rem;
+    
+    /* 3. 外边距 */
+    margin: 1.5rem 0;
+    
+    /* 4. 滚动条 */
+    overflow-x: auto;
+    
+    /* 5. 字体 */
+    font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    
+    /* 6. [关键] 硬朗风格配置 */
+    /* 实线边框，颜色跟随当前主题的文字颜色 */
+    border: 2px solid var(--main-color);
+    
+    /* 硬阴影：X偏移4px, Y偏移4px, 模糊0px, 扩展0px */
+    /* 颜色也跟随文字颜色，形成完美的复古效果 */
+    box-shadow: 4px 4px 0 0 var(--main-color);
+    
+    /* 7. 确保背景色和文字颜色对比度 (Shiki 会自动处理，但我们可以强制背景跟随主题) */
+    /* 如果您希望代码块背景完全透明（透出网页背景），可以解开下面这行 */
+    /* background-color: var(--bg-color) !important; */
+}
+
+/* 暗黑模式下的微调 (可选) */
+html.dark .astro-code {
+    /* 在暗黑模式下，var(--main-color) 是白色 */
+    /* 所以这里会自动变成：白边框 + 白阴影，非常酷 */
+    
+    /* 如果觉得阴影太亮，可以稍微调整透明度，例如：*/
+    /* box-shadow: 4px 4px 0 0 rgba(229, 229, 229, 0.5); */
+}
