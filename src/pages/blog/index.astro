@@ -78,44 +78,13 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
             .post-item[data-index="2"],
             .post-item[data-index="3"],
             .post-item[data-index="4"] {
-                /* 这些由 View Transition 处理，不需要额外动画 */
+                /* View Transition 会自动处理这些 */
             }
 
-            /* 第6个及之后的文章：初始状态隐藏并下移 */
+            /* 第6个及之后:直接显示,不要动画 */
             .post-item[data-animate="true"] {
-                opacity: 0;
-                transform: translateY(20px);
+                /* 移除所有动画相关样式 */
             }
-
-            /* 页面刷新时直接显示，不执行动画 */
-            .post-item[data-animate="true"].instant-show {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            /* 添加 .fade-in 类后才开始淡入+上移动画 */
-            .post-item.fade-in {
-                animation: fadeInUp 0.8s ease-out forwards;
-            }
-
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            /* 交错动画延迟 - 基于在动画组中的位置 */
-            .post-item.fade-in[data-animate-index="0"] { animation-delay: 0s; }
-            .post-item.fade-in[data-animate-index="1"] { animation-delay: 0.05s; }
-            .post-item.fade-in[data-animate-index="2"] { animation-delay: 0.1s; }
-            .post-item.fade-in[data-animate-index="3"] { animation-delay: 0.15s; }
-            .post-item.fade-in[data-animate-index="4"] { animation-delay: 0.2s; }
-            .post-item.fade-in[data-animate-index="5"] { animation-delay: 0.25s; }
 
 			.post-link {
 				text-decoration: none;
@@ -193,7 +162,6 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
             <div class="blog-container-wrapper">
                 <div id="content-scroll-area">
                     {years.map(year => {
-                        let yearPostIndex = 0;
                         return (
                             <section class="year-section">
                                 <ul>
@@ -203,12 +171,9 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
                                             month: 'long'
                                         });
                                         
-                                        // 计算全局索引
                                         const globalIndex = posts.findIndex(p => p.id === post.id);
                                         const needsAnimation = globalIndex >= 5;
                                         const animateIndex = needsAnimation ? (globalIndex - 5) : 0;
-                                        
-                                        yearPostIndex++;
 
                                         return (
                                             <li 
@@ -243,35 +208,8 @@ const years = Object.keys(postsByYear).sort((a, b) => b - a);
 		<Footer />
 
         <script>
-            function initAnimations() {
-                // 检测是否为页面刷新
-                const navigation = performance.getEntriesByType('navigation')[0];
-                const isPageReload = navigation && navigation.type === 'reload';
-                
-                // 获取所有需要动画的元素
-                const animatedItems = document.querySelectorAll('.post-item[data-animate="true"]');
-                
-                // 如果是页面刷新，直接显示所有内容，不执行动画
-                if (isPageReload) {
-                    animatedItems.forEach(item => {
-                        item.classList.add('instant-show');
-                    });
-                    return;
-                }
-
-                // 如果是页面导航，延迟一点点后执行动画
-                setTimeout(() => {
-                    animatedItems.forEach(item => {
-                        item.classList.add('fade-in');
-                    });
-                }, 150);
-            }
-
-            // 页面首次加载
-            document.addEventListener('DOMContentLoaded', initAnimations);
-            
-            // Astro 页面切换后
-            document.addEventListener('astro:page-load', initAnimations);
+            // 移除所有动画相关代码,保持页面简洁
+            // 只有前5个标题会通过 View Transition 产生动画效果
         </script>
 	</body>
 </html>
