@@ -15,130 +15,177 @@ posts.forEach(post => {
 	});
 });
 
-// 转换为数组并按文章数量排序
-const sortedTags = Array.from(tagCounts.entries())
-	.sort((a, b) => b[1] - a[1]);
+// 转换为数组
+const tags = Array.from(tagCounts.entries());
+
+// 计算最大和最小文章数
+const counts = tags.map(([_, count]) => count);
+const maxCount = Math.max(...counts);
+const minCount = Math.min(...counts);
+
+// 辅助函数：生成随机样式数据
+function getTagVisuals(count: number) {
+	// 1. 字体大小
+	const range = maxCount - minCount;
+	const percent = range === 0 ? 0.5 : (count - minCount) / range;
+	const fontSize = 1 + percent * 2; 
+
+	// 2. [修改] 角度随机扩大到 (-45 ~ 45 度)
+    // 之前是 60 (-30~30)，现在改为 91 (-45~45)
+	const rot = Math.floor(Math.random() * 60) - 30;
+
+    // 3. 位移随机 (X, Y)
+    // 角度变大后，位移也可以稍微配合一下，保持混乱感
+    const tx = Math.floor(Math.random() * 40) - 20;
+    const ty = Math.floor(Math.random() * 40) - 20;
+
+	// 4. 外边距随机
+	const margin = `${Math.random() * 1 - 0.5}rem ${Math.random() * 2 - 1}rem`;
+
+    // 5. 初始层级 (0-10)
+    const zIndex = Math.floor(Math.random() * 10);
+
+	return {
+		fontSize: `${fontSize.toFixed(2)}rem`,
+        rot,
+        tx,
+        ty,
+		margin,
+        zIndex
+	};
+}
+
+// 随机打乱
+const shuffledTags = tags.sort(() => Math.random() - 0.5);
 ---
 
 <!doctype html>
 <html lang="zh-CN">
 	<head>
 		<BaseHead title={`分类 - ${SITE_TITLE}`} description="博客文章分类" />
-		<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 		<style>
-			.page-title-wrapper {
-				position: relative;
-				display: inline-block;
-				padding-right: 1.25rem;
-				margin-bottom: 2rem;
-			}
-
-			.page-title-bg {
-				position: absolute;
-				left: 0;
-				top: 0;
-				height: 100%;
-				width: 4px;
-				background-color: var(--main-color);
-				z-index: -1;
-			}
-
-			.page-title {
-				font-size: 2rem;
-				font-weight: bold;
-				color: var(--main-color);
-				padding-left: 1rem;
-				margin: 0;
-			}
-
-			.categories-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-				gap: 1.5rem;
+			/* 标签云容器 */
+			.tag-cloud-container {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-items: center;
 				list-style: none;
 				margin: 0;
-				padding: 0;
+                
+                /* 保持较大的顶部内边距，防止45度旋转时棱角戳到导航栏 */
+				padding: 10rem 2rem 5rem; 
+                
+                overflow: visible;
+                position: relative;
+                
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
 			}
 
 			.category-item {
-				margin: 0;
+                position: relative;
+                transition: z-index 0s; 
 			}
 
+            /* 悬停时提升 父元素 li 的层级，防止被遮挡 */
+            .category-item:hover {
+                z-index: 9999 !important;
+            }
+
 			.category-link {
-				display: flex;
-				justify-content: space-between;
+				display: inline-flex;
 				align-items: center;
-				/* 原来的代码: padding: 1.5rem; */
-				padding: 0.5rem 1.5rem; /* [!code modified] 修改这里：减小垂直内边距，让高度变小 */
+				gap: 0.3em;
+				padding: 0.4em 0.8em;
 				background-color: var(--box-bg);
-				border: 1px solid transparent;
-				transition: all 0.2s ease;
 				text-decoration: none;
 				color: var(--main-color);
-}
+                border: 1px solid transparent;
+                cursor: pointer;
+                
+                /* CSS 变量控制初始状态 */
+                transform: translate(calc(var(--tx) * 1px), calc(var(--ty) * 1px)) rotate(calc(var(--rot) * 1deg));
+                
+				transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                
+                will-change: transform;
+                backface-visibility: hidden;
+			}
 
 			.category-link:hover {
 				border-color: var(--main-color);
-				transform: translate(-2px, -2px);
-				box-shadow: 2px 2px 0px 0px var(--main-color);
+				background-color: var(--bg-color); 
+				
+                /* 悬停归位：角度复原为 0度 或 5度，方便阅读 */
+                /* 这里保持原来的设计：微转 5 度，放大 */
+				transform: translate(0, 0) rotate(5deg) scale(1.2);
+				
+				box-shadow: 4px 4px 0px 0px var(--main-color);
 			}
 
 			.category-name {
-				font-size: 1.125rem;
 				font-weight: 500;
-				margin: 0;
+                line-height: 1;
 			}
 
 			.category-count {
-				font-size: 1.5rem;
+				font-size: 0.5em;
 				font-weight: bold;
-				color: var(--main-color);
 				opacity: 0.6;
+                margin-left: 2px;
+                vertical-align: top;
 			}
 
 			.total-info {
-				margin-top: 2rem;
-				/* [!code deleted] 删除背景色和内边距 */
-				/* padding: 1rem 1.5rem; */
-				/* background-color: var(--box-bg); */
-				
+				margin-top: 5rem;
 				text-align: center;
 				color: var(--main-color);
-				
-				/* [!code modified] 修改：字号和透明度改为与分页信息 (.page-info) 一致 */
 				font-size: 0.75rem; 
-				opacity: 0.6;       /* 原为 0.8，改为 0.6 */
+				opacity: 0.6;
 			}
 
 			@media (max-width: 768px) {
-				.categories-grid {
-					grid-template-columns: 1fr;
-				}
-
-				.page-title {
-					font-size: 1.5rem;
-				}
+                .tag-cloud-container {
+                    padding: 6rem 1rem;
+                }
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-
-
-			<ul class="categories-grid">
-				{sortedTags.map(([tag, count]) => (
-					<li class="category-item">
-						<a href={`/tags/${tag}/`} class="category-link">
+			<ul class="tag-cloud-container">
+				{shuffledTags.map(([tag, count]) => {
+                    const visuals = getTagVisuals(count);
+                    return (
+					<li 
+                        class="category-item" 
+                        style={`
+                            margin: ${visuals.margin}; 
+                            z-index: ${visuals.zIndex};
+                        `}
+                    >
+						<a 
+                            href={`/tags/${tag}/`} 
+                            class="category-link"
+                            style={`
+                                font-size: ${visuals.fontSize}; 
+                                --tx: ${visuals.tx};
+                                --ty: ${visuals.ty};
+                                --rot: ${visuals.rot};
+                            `}
+                        >
 							<span class="category-name"># {tag}</span>
 							<span class="category-count">{count}</span>
 						</a>
 					</li>
-				))}
+				)})}
 			</ul>
 
 			<div class="total-info">
-				共 {sortedTags.length} 个分类，{posts.length} 篇文章
+				共 {shuffledTags.length} 个分类，{posts.length} 篇文章
 			</div>
 		</main>
 		<Footer />
