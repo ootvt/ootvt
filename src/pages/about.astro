@@ -1,5 +1,4 @@
 ---
-
 import Layout from '../layouts/BlogPost.astro';
 ---
 
@@ -7,11 +6,153 @@ import Layout from '../layouts/BlogPost.astro';
 	title="About Me"
 	description="Lorem ipsum dolor sit amet"
 	pubDate={new Date('August 08 2021')}
-
 >
 	<p>
-		人一定要10点半睡觉！
+		👋 这里是一名普通工业设计师，对新奇的东西充满了好奇心。
+		<br><br>
+		一个矛盾的人，着迷于规则的打破，又沉溺于打破后的规则。
+		<br><br>
+		喜爱阅读、摄影、游戏、音乐、绘画等一切富有创造力的活动。
 	</p>
 
+	<div class="mbti-section">
+		
+		<h3 class="mbti-title">
+			<a href="https://www.16personalities.com/ch/档案/0f67c69b24a9d" target="_blank">
+				逻辑学家 (INTP-A)
+			</a>
+		</h3>
+
+		<div class="mbti-chart">
+			<div class="trait-row">
+				<span class="trait-label left">内向 100%</span>
+				<div class="progress-track">
+					<div class="progress-fill" style="width: 100%;"></div>
+				</div>
+				<span class="trait-label right">0% 外向</span>
+			</div>
+
+			<div class="trait-row">
+				<span class="trait-label left">直觉 96%</span>
+				<div class="progress-track">
+					<div class="progress-fill" style="width: 96%;"></div>
+				</div>
+				<span class="trait-label right">4% 现实</span>
+			</div>
+
+			<div class="trait-row">
+				<span class="trait-label left">逻辑 67%</span>
+				<div class="progress-track">
+					<div class="progress-fill" style="width: 67%;"></div>
+				</div>
+				<span class="trait-label right">33% 感受</span>
+			</div>
+
+			<div class="trait-row">
+				<span class="trait-label left">展望 97%</span>
+				<div class="progress-track">
+					<div class="progress-fill" style="width: 97%;"></div>
+				</div>
+				<span class="trait-label right">3% 计划</span>
+			</div>
+			
+			<div class="trait-row">
+				<span class="trait-label left">坚决 60%</span>
+				<div class="progress-track">
+					<div class="progress-fill" style="width: 60%;"></div>
+				</div>
+				<span class="trait-label right">40% 谨慎</span>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.mbti-section {
+			position: relative;
+			overflow: visible; /* 必须 visible，不然标题会被切掉 */
+			
+			margin-top: 2rem;
+			padding: 1.5rem 1.25rem 1rem;
+			
+			border: 2px solid var(--main-color);
+			box-shadow: 4px 4px 0 0 var(--main-color);
+			border-radius: 0;
+			background-color: #ffffff;
+			font-size: 0.9rem;
+		}
+
+		/* 暗黑模式适配 */
+		:global(html.dark) .mbti-section {
+			background-color: #2e2e2e;
+		}
+
+		.mbti-title {
+			position: absolute;
+			top: -1.2rem; /* 骑在边框线上 */
+			left:0.8rem;
+			
+			background-color: #ffffff; /* 遮挡线 */
+			padding: 0 0.5rem;
+			
+			margin: 0;
+			font-size: 1.1rem;
+			font-weight: bold;
+			border: none !important;
+			line-height: 1.2;
+			z-index: 10;
+		}
+		
+		:global(html.dark) .mbti-title {
+			background-color: #2e2e2e;
+		}
+		
+		.mbti-title a {
+			text-decoration: none !important;
+			color: inherit;
+			border: none !important;
+		}
+
+		/* === 【关键修改】给图表区域加个上边距，把内容往下推 === */
+		.mbti-chart {
+			margin-top: 2rem; /* 这里控制离标题的距离，不够可以改成 1.5rem */
+		}
+
+		.trait-row {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 0.6rem;
+		}
+
+		.trait-label {
+			flex: 0 0 auto;
+			font-weight: bold;
+			font-size: 0.8rem;
+			color: var(--main-color);
+		}
+		
+		.trait-label.left { width: 70px; text-align: left; }
+		.trait-label.right { width: 60px; text-align: right; opacity: 0.6; }
+
+		.progress-track {
+			flex: 1;
+			height: 10px;
+			border: 1px solid var(--main-color);
+			background: transparent;
+			padding: 1px;
+			margin: 0 05px;
+		}
+
+		.progress-fill {
+			height: 100%;
+			background-color: var(--main-color);
+			border-radius: 0; 
+		}
+
+		@media (max-width: 480px) {
+			.trait-label { font-size: 0.75rem; }
+			.trait-label.left, .trait-label.right { width: 60px; }
+		}
+	</style>
 
 </Layout>
