@@ -43,6 +43,9 @@ const minCount = Math.min(...counts);
 				max-width: 800px;
 				margin-left: auto;
 				margin-right: auto;
+				/* === 新增这两行 === */
+				opacity: 0; /* 初始状态是透明的（看不见） */
+				transition: opacity 0.5s ease-in; /* 当变为可见时，用 0.5秒淡入 */
 			}
 
 			.category-item {
@@ -200,6 +203,7 @@ const minCount = Math.min(...counts);
 						link.style.setProperty('--hover-rot', hoverRot + 'deg');
 					});
 				});
+				container.style.opacity = '1';
 			}
 
 			// 页面加载时初始化
