@@ -1,0 +1,7 @@
+{
+  "markdown.copyFiles.destination": {
+    // 含义：匹配 src/content/blog/ 下的所有文件
+    // 目标：保存到 "当前文件名(不含后缀)/" 的文件夹中
+    "src/content/blog/**/*": "${documentBaseName}/"
+  }
+}
