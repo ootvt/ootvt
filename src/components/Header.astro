@@ -45,14 +45,26 @@ import ThemeSwitch from './ThemeSwitch.astro';
 		margin: 0;
 	}
 
-	nav {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 2rem;
-		justify-content: center;
-		width: 100%;
-		max-width: 640px;
-	}
+/* src/components/Header.astro */
+
+nav {
+    display: flex;
+    /* 1. 允许换行 (这是实现"变成0就换行"的前提) */
+    flex-wrap: wrap; 
+    
+    /* 2. 动态间距的核心代码 */
+    /* 语法: clamp(最小值, 理想值, 最大值) */
+    /* 解释: 
+       - 最小 0px: 屏幕极窄时，间距可以缩到 0
+       - 理想 4vw: 间距通常占据视口宽度的 4% (随屏幕变窄而变小)
+       - 最大 2rem: 屏幕够宽时，保持原本的 2rem 宽敞间距
+    */
+    gap: clamp(0px, 4vw, 2rem);
+    
+    justify-content: center;
+    width: 100%;
+    max-width: 640px;
+}
 
 	.nav-button {
 		font-family: 'Noto Serif SC', 'SimSun', serif;
@@ -86,31 +98,36 @@ import ThemeSwitch from './ThemeSwitch.astro';
 	}
 
 	@media (max-width: 768px) {
-		header {
-			padding: 2rem 1rem 1rem;
-		}
+			header {
+				padding: 2rem 1rem 1rem;
+			}
 
-		.site-title {
-			font-size: 1.75rem;
-		}
+			.site-title {
+				font-size: 1.75rem;
+			}
 
-		.header-content {
-			gap: 1.5rem;
-		}
+			.header-content {
+				gap: 1.5rem;
+			}
 
-		/* [新增] 强制导航栏不换行 */
-		nav {
-			flex-wrap: nowrap; /* 禁止换行 */
-			gap: 1.8rem;       /* 减小按钮之间的间距 */
-		}
+			/* 只修改 nav 容器，不动按钮本身 */
+			nav {
+				/* 1. 允许换行：当屏幕实在挤不下时，自动换到下一行 */
+				flex-wrap: wrap;
+				
+				/* 2. 动态间距：
+				- 最小 0px
+				- 推荐 4vw (随着屏幕变窄，间距自动变小)
+				- 最大 2rem (保持和桌面端一致的上限)
+				*/
+				gap: clamp(0px, 4vw, 2rem);
+				
+				/* 确保容器居中 */
+				justify-content: center;
+			}
 
-		/* [新增] 缩小按钮尺寸以容纳一行4个 */
-		.nav-button {
-			padding: 0.1rem 1.75rem; /* 大幅减小左右内边距 */
-			font-size: 0.8rem;      /* 保持字号或微调 */
-			white-space: nowrap;    /* 防止“文章”两个字竖着排列 */
-			flex-shrink: 0;         /* 防止按钮被挤压变形 */
-			border-width: 5px;      /* (可选) 稍微减细手机版边框 */
+			/* * 注意：这里特意删除了之前对 .nav-button 的修改 
+			* 这样按钮就会保持原有的 5px 边框和 1.75rem 内边距
+			*/
 		}
-	}
 </style>
