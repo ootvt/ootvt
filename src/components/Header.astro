@@ -126,8 +126,19 @@ nav {
 				justify-content: center;
 			}
 
-			/* * 注意：这里特意删除了之前对 .nav-button 的修改 
-			* 这样按钮就会保持原有的 5px 边框和 1.75rem 内边距
-			*/
+			.nav-button {
+					/* clamp(最小值, 理想动态值, 最大值)
+					- 最小值: 0.5rem (约8px)，这是你设定的底线，再窄也不会小于这个值
+					- 动态值: 5vw (屏幕宽度的5%)，随着屏幕变窄，按钮会自动变短
+					- 最大值: 1.75rem (桌面端原尺寸)，屏幕够宽时保持原样
+					*/
+					padding: 0.1rem clamp(0.4rem, 4vw, 1.75rem);
+					
+					/* 保持不换行，防止文字竖排 */
+					white-space: nowrap; 
+					
+					/* 防止按钮被过度挤压变形 */
+					flex-shrink: 0;
+				}
 		}
 </style>
