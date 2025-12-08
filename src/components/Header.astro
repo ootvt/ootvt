@@ -97,5 +97,20 @@ import ThemeSwitch from './ThemeSwitch.astro';
 		.header-content {
 			gap: 1.5rem;
 		}
+
+		/* [新增] 强制导航栏不换行 */
+		nav {
+			flex-wrap: nowrap; /* 禁止换行 */
+			gap: 1.8rem;       /* 减小按钮之间的间距 */
+		}
+
+		/* [新增] 缩小按钮尺寸以容纳一行4个 */
+		.nav-button {
+			padding: 0.1rem 1.75rem; /* 大幅减小左右内边距 */
+			font-size: 0.8rem;      /* 保持字号或微调 */
+			white-space: nowrap;    /* 防止“文章”两个字竖着排列 */
+			flex-shrink: 0;         /* 防止按钮被挤压变形 */
+			border-width: 5px;      /* (可选) 稍微减细手机版边框 */
+		}
 	}
 </style>

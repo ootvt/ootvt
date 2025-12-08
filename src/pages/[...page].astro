@@ -158,13 +158,48 @@ const { page } = Astro.props;
 				gap: 2rem;
 			}
 
+			/* src/pages/[...page].astro */
+
+			/* src/pages/[...page].astro */
+
 			@media (max-width: 768px) {
 				.post-title {
 					font-size: 1.25rem;
 				}
 
 				.post-header {
-					gap: 0.5rem;
+					/* 允许换行 */
+					flex-wrap: wrap;
+					
+					/* [修改] 恢复默认左对齐，这样日期和标签就会挨在一起 */
+					justify-content: flex-start;
+					
+					/* 垂直居中对齐 */
+					align-items: center;
+					
+					/* 设置间距：行间距(上下) 0.5rem，列间距(左右) 1rem */
+					/* 这里的 1rem 就是日期和标签之间的距离 */
+					gap: 0.5rem 1rem; 
+					
+					margin-bottom: 0.75rem;
+				}
+
+				/* 强制标题链接独占一行 */
+				.post-header > .post-link {
+					/* 使用 !important 覆盖掉 HTML 里的 style="flex: 1" */
+					flex: 0 0 100% !important; 
+					width: 100%;
+				}
+
+				/* 调整日期样式 (可选) */
+				.post-date {
+					margin: 0;
+					line-height: 1;
+				}
+				
+				/* 调整标签容器样式 (可选) */
+				.post-tags {
+					margin: 0;
 				}
 
 				.page-buttons {
