@@ -186,14 +186,18 @@ const yearGroups = Array.from(groupsMap.entries())
             /* 移动端适配 */
             @media (max-width: 600px) {
                 .year-label {
-                    font-size: 3rem; /* 移动端对应缩小 */
+                    font-size: 3rem;
+                    /* 移动端对应缩小 */
                     top: -1.2rem;
                 }
                 .articles-box {
                     padding: 1.5rem 1rem;
                 }
-                /* 移动端取消镜像 */
-                .year-group.mirror .year-label {
+
+                /* * 删除或注释掉下面这一大段 "取消镜像" 的代码 
+                * 这样手机上就会继承桌面的镜像样式了
+                */
+                /* .year-group.mirror .year-label {
                     right: 1rem;
                     left: auto;
                 }
@@ -206,6 +210,7 @@ const yearGroups = Array.from(groupsMap.entries())
                 .year-group.mirror .post-title-text {
                     text-align: left;
                 }
+                */
             }
 		</style>
 	</head>
