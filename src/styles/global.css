@@ -2,7 +2,7 @@
 @import "tailwindcss"; 
 
 /* 1. 引入 Google Fonts (Alfa Slab One & Noto Serif SC) */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap');
+
 
 /* 在文件最上方添加或修改 */
 html {
