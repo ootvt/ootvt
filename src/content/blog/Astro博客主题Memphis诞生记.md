@@ -29,40 +29,39 @@ git push -u origin main
 ### 确定设计风格、博客首页的设计
 先从网上找几种设计风格供参考，觉得孟菲斯风格比较容易实现，也比较有特点，遂从网上找了一张参考图，原设计者 @Mr. Milú https://www.awwwards.com/mrmilu/
 
-![Alt text](Astro%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98Memphis%E8%AF%9E%E7%94%9F%E8%AE%B0/awwwards-sotd-friendly-projects-1-1.jpg)
+[![pZuZCp8.jpg](https://s41.ax1x.com/2025/12/09/pZuZCp8.jpg)](https://imgchr.com/i/pZuZCp8)
 
 至于什么是孟菲斯风格，网上的信息有很多，我这里就不再赘述了，我会在下面放几张有代表性的图片。我把这种风格中的高饱和度的色彩抽离出来，因为博客的主要目的是给人阅读，太多高饱和度的颜色会让人的眼睛疲劳。米黄色为主色调，深棕色为辅助色，干净又易于阅读。保留了孟菲斯设计风格中抽象几何形状的应用。
 
-![alt text](1080px-Memphis-Milano_Movement.jpg)
+[![pZuZpff.jpg](https://s41.ax1x.com/2025/12/09/pZuZpff.jpg)](https://imgchr.com/i/pZuZpff)
 
 然后参照这种风格在figma先设计了一个草稿，自我感觉比较满意，在参考对象的基础上融入了自己的设计：首页字体用了比较粗的衬线体，中文也用了衬线体（宋体），笔画比较细，与粗边边框的形状形成强烈对比；文章底框采用半透明矩形，增强层次感，不至于太散乱。
 
-![alt text](<Astro博客主题Memphis诞生记/本体 (2)-3-1.png>)
+[![pZuZHNq.png](https://s41.ax1x.com/2025/12/09/pZuZHNq.png)](https://imgchr.com/i/pZuZHNq)
 
 我把图片发给gemini，让它把图片变成代码，还原效果很不错：
 
-![alt text](Astro博客主题Memphis诞生记/image-3.png)
+[![pZuZStP.png](https://s41.ax1x.com/2025/12/09/pZuZStP.png)](https://imgchr.com/i/pZuZStP)
 
 修改了一下细节，边框粗细、布局、动画、网站名称（就是10点半睡觉的意思），首页就变成现在看到的模样啦，过程省略10000字，都是不停地ai修改试错，过程很繁琐就不记录了。
 
 ### 设计归档页面
 一开始是想做成这样的效果，但感觉缺少设计感，右边也比较空：
 
-![alt text](Astro博客主题Memphis诞生记/image-1.png)
+[![pZuVzkt.png](https://s41.ax1x.com/2025/12/09/pZuVzkt.png)](https://imgchr.com/i/pZuVzkt)
 
 后面就重新用figma设计一个,加了一个底框和首页相呼应，排版上也没有那边空了；年份用一半在底框外面的形式有一种跳脱感，不同年份采用镜像的方式，没有那么呆板；月份用英文缩写，有一点高级感：
 
-![alt text](<Astro博客主题Memphis诞生记/本体2 (1).png>)
-
+[![pZuZAmj.png](https://s41.ax1x.com/2025/12/09/pZuZAmj.png)](https://imgchr.com/i/pZuZAmj)
 ### 设计TAG页面
 
 原本ai自动帮我生成的分类页面是这样的，一开始我觉得还可以，就是比较普通，也没想好怎么设计：
 
-![alt text](<Astro博客主题Memphis诞生记/本体2 (3)-2.png>)
+[![pZuZi6g.png](https://s41.ax1x.com/2025/12/09/pZuZi6g.png)](https://imgchr.com/i/pZuZi6g)
 
 后来想想还是不够有意思，就在网上找tag页的设计参考，大部分都中规中矩；偶然间发现了一种叫tag云的设计，让我有了灵感，就是对应tag的文章数量越多，这个tag就越大，我就想是不是也可以这样设计。但直接像网上那种就又不符合整体网站的设计风格，我就想出了一个方法：保持我原来标签的设计风格，文章越多的tag越大，加上随机分布和角度，有一种随机散落在桌面上的感觉，鼠标悬停时可放大、旋转，增强交互感。我让ai跑了一下，经过数十次的修改，终于有了让我满意的效果：
 
-![alt text](Astro博客主题Memphis诞生记/image-2.png)
+[![pZuZP1S.png](https://s41.ax1x.com/2025/12/09/pZuZP1S.png)](https://imgchr.com/i/pZuZP1S)
 
 ### 暗色/亮色模式
 
