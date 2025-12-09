@@ -29,7 +29,7 @@ git push -u origin main
 ### 确定设计风格、博客首页的设计
 先从网上找几种设计风格供参考，觉得孟菲斯风格比较容易实现，也比较有特点，遂从网上找了一张参考图，原设计者 @Mr. Milú https://www.awwwards.com/mrmilu/
 
-![参考图](https://assets.awwwards.com/awards/sites_of_the_day/2016/07/awwwards-sotd-friendly-projects-1.jpg)
+![Alt text](Astro%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98Memphis%E8%AF%9E%E7%94%9F%E8%AE%B0/awwwards-sotd-friendly-projects-1-1.jpg)
 
 然后参照这种风格在figma先设计了一个草稿，自我感觉比较满意，在参考对象的基础上融入了自己的设计：首页字体用了比较粗的衬线体，中文也用了衬线体（宋体），笔画比较细，与粗边边框的形状形成强烈对比；文章底框采用半透明矩形，增强层次感，不至于太散乱。
 
