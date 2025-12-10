@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://ootvt-astro.pages.dev', // 替换为您的 Cloudflare Pages 域名
+  site: 'https://ootvt.eu.org', // 替换为您的 Cloudflare Pages 域名
   
   // [关键修复] 配置 Tailwind 4 的 Vite 插件
   // 没有这个，Tailwind 的样式在刷新后无法正确构建
