@@ -29,7 +29,7 @@
 
                 // 1. 拉下 (300ms)
                 freshSwitch.classList.add('pulling');
-                await new Promise(r => setTimeout(r, 300));
+                await new Promise(r => setTimeout(r, 320));
 
                 // 2. 准备切换
                 if (!document.startViewTransition) {
@@ -97,17 +97,29 @@
 
 <style>
     .switch-container {
-        position: fixed;
-        top: 0;
-        right: 10%; 
-        width: 40px;
-        z-index: 10000;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 20px;
-    }
+            position: fixed;
+            top: 0;
+            right: 10%; 
+            width: 40px;
+            z-index: 10000;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20px;
+            
+            /* [新增] 禁止文本选择，修复光标出现和拖拽干扰问题 */
+            -webkit-user-select: none; /* Chrome, Safari, Opera */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE 10+, Edge */
+            user-select: none;         /* Standard */
+            
+            /* [新增] 禁止触摸滚动，防止在手机上拉动时触发页面滚动 */
+            touch-action: none; 
+            
+            /* [新增] 禁止原生拖拽，防止图片/链接拖拽行为 */
+            -webkit-user-drag: none;
+        }
 
     .cord {
             width: 2px;
