@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ootvt.eu.org/sitemap-index.xml
+Sitemap: https://ootvt.eu.org/sitemap-0.xml
