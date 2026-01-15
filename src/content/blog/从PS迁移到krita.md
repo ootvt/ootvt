@@ -1,7 +1,7 @@
 ---
 title: '从PS迁移到krita'
 description: '觉得PS太笨重了，所以决定从PS迁移到Krita。'
-pubDate: '2025-1-14'
+pubDate: '2026-1-14'
 tags: ['技术', '绘画']
 ---
 
@@ -59,3 +59,17 @@ Krita快捷键在**菜单栏-设置-配置Krita**里面
 笔刷的具体参数也没有去弄懂，只是根据直觉效果去调参数让其接近PS中的效果，没有100%还原PS中的效果。
 
 ![image.png](https://cloudflare-imgbed-f08.pages.dev/file/1768403567345_image.png)
+
+主要调整的地方就是图像的参数、间距、笔尖纹理-图案-选项里面的缩放亮度对比度、效果强度，颜色太淡了调整这些地方有效果
+
+![image.png](https://cloudflare-imgbed-f08.pages.dev/file/1768446907055_image.png)
+
+
+### 导出krita笔刷
+
+菜单栏-设置-管理资源库-创建资源库
+
+![image.png](https://cloudflare-imgbed-f08.pages.dev/file/1768446449573_image.png)
+
+可以把不同各类的资源打包成一个文件进行分享
+![image.png](https://cloudflare-imgbed-f08.pages.dev/file/1768446543300_image.png)
