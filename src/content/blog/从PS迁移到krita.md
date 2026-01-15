@@ -72,4 +72,5 @@ Krita快捷键在**菜单栏-设置-配置Krita**里面
 ![image.png](https://cloudflare-imgbed-f08.pages.dev/file/1768446449573_image.png)
 
 可以把不同各类的资源打包成一个文件进行分享
+
 ![image.png](https://cloudflare-imgbed-f08.pages.dev/file/1768446543300_image.png)
