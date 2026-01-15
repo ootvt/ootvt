@@ -100,6 +100,8 @@ const { slug } = Astro.params;
 				padding: 1.5rem;
 				border: 1px solid transparent;
 				line-height: 1.7;
+				/* [关键修复] 显式指定容器内的文字颜色 */
+				color: var(--main-color);
 			}
 
             .article-content > :global(*:first-child) {
@@ -110,6 +112,17 @@ const { slug } = Astro.params;
                 margin-bottom: 0 !important;
 			}
 
+
+			/* [关键修复] 强制段落、加粗、列表等所有子元素都跟随变量 */
+			.article-content :global(p),
+			.article-content :global(ul),
+			.article-content :global(ol),
+			.article-content :global(li),
+			.article-content :global(strong),
+			.article-content :global(span) {
+				color: var(--main-color) !important; /* 加上 !important 确保不被 Tailwind 默认样式覆盖 */
+			}
+			
 			.article-content :global(p) {
 				margin-bottom: 1.5em;
 				text-align: justify;
