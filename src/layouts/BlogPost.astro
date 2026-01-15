@@ -183,6 +183,49 @@ const { slug } = Astro.params;
 				opacity: 0.7;
 			}
 
+			.article-content :global(li::marker) {
+				color: var(--main-color) !important; /* 强制变色 */
+			}
+
+			.article-content :global(ul),
+			.article-content :global(ol) {
+				margin: 1em 0;
+				padding-left: 1.5rem;
+				color: var(--main-color);
+			}
+
+			.article-content :global(li) {
+				margin: 0.5em 0;
+				padding-left: 0.5rem; /* 给文字和圆点之间稍微留点空隙 */
+			}
+
+			/* 2. 表格样式：只要横线 (极简风) */
+			.article-content :global(table) {
+				width: 100%;
+				border-collapse: collapse;
+				margin: 2em 0;
+				/* 去掉表格外围的所有边框 */
+				border: none; 
+			}
+
+			.article-content :global(th),
+			.article-content :global(td) {
+				/* 先去掉所有方向的边框 */
+				border: none;
+				/* 只保留底部的横线 */
+				border-bottom: 1px solid var(--main-color); 
+				padding: 0.75rem 0.5rem; /* 左右稍微留点空，上下撑开 */
+			}
+
+			.article-content :global(th) {
+				/* 表头样式 */
+				background-color: transparent; /* 只要横线时，背景通常留白更干净，或者保留 var(--box-bg) 也可以 */
+				font-weight: bold;
+				text-align: left;
+				/* 表头底部横线加粗，区分内容 */
+				border-bottom: 2px solid var(--main-color);
+			}
+
 			@media (max-width: 768px) {
 				.article-title {
 					font-size: 1.25rem;
@@ -192,6 +235,7 @@ const { slug } = Astro.params;
 					padding: 1rem;
 				}
 			}
+			
 		</style>
 	</head>
 
