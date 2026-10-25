@@ -2,6 +2,17 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<!-- 修正：/wedding 不带结尾斜杠时，相对路径的图片会解析到根目录导致 404 -->
+<script>
+(function () {
+  var p = location.pathname;
+  if (location.protocol !== 'file:' && !/\/$/.test(p)) {
+    var b = document.createElement('base');
+    b.href = p + '/';
+    document.head.appendChild(b);
+  }
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>闻宇涛 & 王忠燕 · 婚礼邀请函</title>
 <meta name="description" content="谨定于二〇二六年十一月廿二日，为闻宇涛先生与王忠燕女士举行结婚典礼，恭请光临。">
